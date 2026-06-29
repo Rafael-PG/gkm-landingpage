@@ -1,5 +1,6 @@
 "use client";
 
+import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { Mail, Phone, MapPin, Shield, CheckCircle, ArrowUp } from 'lucide-react';
 
@@ -19,9 +20,8 @@ export default function Footer() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-12">
           <div className="space-y-6">
-            <div className="flex items-center gap-2 cursor-pointer" onClick={() => handleNav('/')}>
-              <div className="w-9 h-9 flex items-center justify-center bg-brand-red rounded-lg font-display font-bold text-lg text-white">GKM</div>
-              <span className="font-display font-extrabold text-base tracking-tight text-white">GKM <span className="text-brand-red">TECHNOLOGY</span></span>
+            <div className="cursor-pointer" onClick={() => handleNav('/')}>
+              <Image src="/images/logo/gkm-logo.webp" alt="GKM Technology" width={120} height={120} className="object-contain" />
             </div>
             <p className="text-sm text-gray-400 leading-relaxed font-light">
               Líderes en diseño, instalación y mantenimiento de infraestructura tecnológica, CCTV, soporte TI y servicio técnico autorizado a nivel nacional.

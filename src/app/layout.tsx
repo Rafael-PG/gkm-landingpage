@@ -15,7 +15,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="es" className="h-full">
+      <html lang="es" className="h-full" suppressHydrationWarning>
       <body className="min-h-full flex flex-col bg-brand-light selection:bg-brand-red selection:text-white">
         <Header />
         <main className="flex-grow">{children}</main>

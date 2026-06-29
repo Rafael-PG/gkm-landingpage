@@ -1,6 +1,7 @@
 "use client";
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import Image from 'next/image';
 import { motion, AnimatePresence } from 'motion/react';
 import { Menu, X, ChevronDown, Shield, Server, Wrench, Headphones, ShieldCheck, Cpu, ArrowRight } from 'lucide-react';
 import { usePathname, useRouter } from 'next/navigation';
@@ -10,6 +11,16 @@ export default function Header() {
   const router = useRouter();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [dropdownOpen, setDropdownOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 60);
+    };
+    handleScroll();
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
   const handleNav = (path: string) => {
     router.push(path);
@@ -29,23 +40,19 @@ export default function Header() {
   const isServicesActive = pathname.startsWith('/servicios');
 
   return (
-    <header className="sticky top-0 z-50 w-full bg-brand-dark/95 backdrop-blur-md border-b border-brand-gray/20 text-white">
+    <header className={`sticky top-0 z-50 w-full text-white transition-all duration-300 ease-out ${scrolled ? 'bg-brand-dark/95 backdrop-blur-md border-b border-brand-gray/20 shadow-lg shadow-black/10' : 'bg-transparent border-b border-transparent'}`}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-20">
           <div className="flex-shrink-0 flex items-center cursor-pointer" onClick={() => handleNav('/')}>
-            <div className="flex items-center gap-2">
-              <div className="relative w-10 h-10 flex items-center justify-center bg-brand-red rounded-lg overflow-hidden group">
-                <div className="absolute inset-0 bg-white/20 transform -skew-x-12 translate-x-full group-hover:translate-x-[-150%] transition-transform duration-1000" />
-                <span className="font-display font-bold text-xl tracking-tighter text-white">GKM</span>
-              </div>
-              <div className="flex flex-col">
-                <span className="font-display font-extrabold text-lg tracking-tight leading-none text-white">
-                  GKM <span className="text-brand-red">TECHNOLOGY</span>
-                </span>
-                <span className="text-[9px] text-brand-gray tracking-widest font-sans uppercase">
-                  Hardware &amp; TI Solutions
-                </span>
-              </div>
+            <div className="flex items-center">
+              <Image
+                src="/images/logo/gkm-logo.webp"
+                alt="GKM Technology"
+                width={1023}
+                height={442}
+                className="h-11 w-auto"
+                priority
+              />
             </div>
           </div>
 
