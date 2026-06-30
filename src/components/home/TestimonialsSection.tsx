@@ -70,7 +70,7 @@ export default function TestimonialsSection() {
             </motion.div>
           </AnimatePresence>
 
-          <div className="flex items-center gap-2.5" role="tablist" aria-label="Seleccionar testimonio">
+          <div className="flex items-center gap-1" role="tablist" aria-label="Seleccionar testimonio">
             {testimonials.map((_, idx) => (
               <button
                 key={idx}
@@ -78,12 +78,14 @@ export default function TestimonialsSection() {
                 role="tab"
                 aria-selected={idx === activeTestimonial}
                 aria-label={`Testimonio ${idx + 1}`}
-                className={`w-2.5 h-2.5 rounded-full transition-all duration-300 cursor-pointer ${
+                className="group w-8 h-8 flex items-center justify-center rounded-full transition-all duration-300 cursor-pointer"
+              >
+                <span className={`rounded-full transition-all duration-300 ${
                   idx === activeTestimonial
-                    ? 'bg-brand-red w-7'
-                    : 'bg-white/30 hover:bg-white/50'
-                }`}
-              />
+                    ? 'w-5 h-2.5 bg-brand-red'
+                    : 'w-2.5 h-2.5 bg-white/30 group-hover:bg-white/50'
+                }`} />
+              </button>
             ))}
           </div>
         </div>

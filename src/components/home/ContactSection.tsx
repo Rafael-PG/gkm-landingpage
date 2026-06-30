@@ -118,40 +118,40 @@ export default function ContactSection() {
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                 <div>
-                  <label className={labelClass}>Nombres <span className="text-brand-red">*</span></label>
-                  <input type="text" placeholder="Ingrese sus datos" className={inputClass} />
+                  <label htmlFor="contact-nombres" className={labelClass}>Nombres <span className="text-brand-red">*</span></label>
+                  <input id="contact-nombres" type="text" placeholder="Ingrese sus datos" className={inputClass} />
                 </div>
                 <div>
-                  <label className={labelClass}>Apellidos <span className="text-brand-red">*</span></label>
-                  <input type="text" placeholder="Ingrese sus apellidos" className={inputClass} />
-                </div>
-              </div>
-
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-                <div>
-                  <label className={labelClass}>Correo de Empresa <span className="text-brand-red">*</span></label>
-                  <input type="email" placeholder="ejemplo@empresa.com" className={inputClass} />
-                </div>
-                <div>
-                  <label className={labelClass}>Teléfono <span className="text-brand-red">*</span></label>
-                  <input type="tel" placeholder="Ingrese su número de teléfono" className={inputClass} />
+                  <label htmlFor="contact-apellidos" className={labelClass}>Apellidos <span className="text-brand-red">*</span></label>
+                  <input id="contact-apellidos" type="text" placeholder="Ingrese sus apellidos" className={inputClass} />
                 </div>
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                 <div>
-                  <label className={labelClass}>Nombre de la Empresa <span className="text-brand-red">*</span></label>
-                  <input type="text" placeholder="Ingrese el nombre de la empresa" className={inputClass} />
+                  <label htmlFor="contact-correo" className={labelClass}>Correo de Empresa <span className="text-brand-red">*</span></label>
+                  <input id="contact-correo" type="email" placeholder="ejemplo@empresa.com" className={inputClass} />
                 </div>
                 <div>
-                  <label className={labelClass}>Página Web</label>
-                  <input type="url" placeholder="Ingresar su pagina web" className={inputClass} />
+                  <label htmlFor="contact-telefono" className={labelClass}>Teléfono <span className="text-brand-red">*</span></label>
+                  <input id="contact-telefono" type="tel" placeholder="Ingrese su número de teléfono" className={inputClass} />
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+                <div>
+                  <label htmlFor="contact-empresa" className={labelClass}>Nombre de la Empresa <span className="text-brand-red">*</span></label>
+                  <input id="contact-empresa" type="text" placeholder="Ingrese el nombre de la empresa" className={inputClass} />
+                </div>
+                <div>
+                  <label htmlFor="contact-web" className={labelClass}>Página Web</label>
+                  <input id="contact-web" type="url" placeholder="Ingresar su pagina web" className={inputClass} />
                 </div>
               </div>
 
               <div>
-                <label className={labelClass}>¿Qué tipo de servicio necesitas? <span className="text-brand-red">*</span></label>
-                <select className="w-full px-4 py-3 bg-white border border-gray-200 focus:border-brand-red focus:ring-1 focus:ring-brand-red/20 rounded-xl text-sm text-brand-dark outline-none transition-all appearance-none cursor-pointer">
+                <label htmlFor="contact-servicio" className={labelClass}>¿Qué tipo de servicio necesitas? <span className="text-brand-red">*</span></label>
+                <select id="contact-servicio" className="w-full px-4 py-3 bg-white border border-gray-200 focus:border-brand-red focus:ring-1 focus:ring-brand-red/20 rounded-xl text-sm text-brand-dark outline-none transition-all appearance-none cursor-pointer">
                   {servicios.map((s) => (
                     <option key={s}>{s}</option>
                   ))}
@@ -159,12 +159,12 @@ export default function ContactSection() {
               </div>
 
               <div>
-                <label className={labelClass}>Verification Code <span className="text-brand-red">*</span></label>
+                <label htmlFor="contact-captcha" className={labelClass}>Verification Code <span className="text-brand-red">*</span></label>
                 <div className="flex flex-wrap items-center gap-4">
                   <div className="bg-brand-red/5 border border-brand-red/10 rounded-xl px-5 py-3 font-display font-bold text-lg text-brand-red select-none tracking-widest">
                     4 + 7 = ?
                   </div>
-                  <input type="text" placeholder="Resultado" className="w-28 px-4 py-3 bg-white border border-gray-200 focus:border-brand-red focus:ring-1 focus:ring-brand-red/20 rounded-xl text-sm text-brand-dark outline-none transition-all text-center placeholder-gray-400" />
+                  <input id="contact-captcha" type="text" placeholder="Resultado" className="w-28 px-4 py-3 bg-white border border-gray-200 focus:border-brand-red focus:ring-1 focus:ring-brand-red/20 rounded-xl text-sm text-brand-dark outline-none transition-all text-center placeholder-gray-400" />
                   <div className="text-brand-gray/50" title="Nuevo código">
                     <HelpCircle className="w-5 h-5" />
                   </div>
