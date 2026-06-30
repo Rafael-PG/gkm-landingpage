@@ -33,19 +33,19 @@ export default function Footer() {
           </div>
 
           <div>
-            <h4 className="font-display font-bold text-sm tracking-widest text-white uppercase mb-6 border-l-2 border-brand-red pl-3">Navegación</h4>
+            <h2 className="font-display font-bold text-sm tracking-widest text-white uppercase mb-6 border-l-2 border-brand-red pl-3">Navegación</h2>
             <ul className="space-y-3 text-sm">
               <li><button onClick={() => handleNav('/')} className="hover:text-brand-red transition-colors text-left cursor-pointer">Inicio</button></li>
               <li><button onClick={() => handleNav('/nosotros')} className="hover:text-brand-red transition-colors text-left cursor-pointer">Nosotros</button></li>
               <li><button onClick={() => handleNav('/servicios')} className="hover:text-brand-red transition-colors text-left cursor-pointer">Servicios de TI &amp; Hardware</button></li>
               <li><button onClick={() => handleNav('/blog')} className="hover:text-brand-red transition-colors text-left cursor-pointer">Blog Tecnológico</button></li>
               <li><button onClick={() => handleNav('/contacto')} className="hover:text-brand-red transition-colors text-left cursor-pointer">Contáctanos</button></li>
-              <li><button onClick={() => handleNav('/portal')} className="hover:text-brand-red transition-colors text-left cursor-pointer flex items-center gap-1.5">Portal de Clientes <span className="bg-brand-red/20 text-brand-red text-[10px] px-1.5 py-0.5 rounded font-bold">B2B</span></button></li>
+              <li><button onClick={() => handleNav('/portal')} className="hover:text-brand-red transition-colors text-left cursor-pointer flex items-center gap-1.5">Portal de Clientes <span className="bg-brand-red text-white text-[10px] px-1.5 py-0.5 rounded font-bold">B2B</span></button></li>
             </ul>
           </div>
 
           <div>
-            <h4 className="font-display font-bold text-sm tracking-widest text-white uppercase mb-6 border-l-2 border-brand-red pl-3">Servicios</h4>
+            <h2 className="font-display font-bold text-sm tracking-widest text-white uppercase mb-6 border-l-2 border-brand-red pl-3">Servicios</h2>
             <ul className="space-y-3 text-sm">
               <li><button onClick={() => handleNav('/servicios/cctv')} className="hover:text-brand-red transition-colors text-left cursor-pointer">CCTV y Seguridad Corporativa</button></li>
               <li><button onClick={() => handleNav('/servicios/soporte-ti')} className="hover:text-brand-red transition-colors text-left cursor-pointer">Soporte TI 24/7 y Mesa de Ayuda</button></li>
@@ -55,7 +55,7 @@ export default function Footer() {
           </div>
 
           <div className="space-y-4">
-            <h4 className="font-display font-bold text-sm tracking-widest text-white uppercase mb-6 border-l-2 border-brand-red pl-3">Contacto</h4>
+            <h2 className="font-display font-bold text-sm tracking-widest text-white uppercase mb-6 border-l-2 border-brand-red pl-3">Contacto</h2>
             <div className="space-y-3 text-sm">
               <div className="flex items-start gap-2">
                 <MapPin className="w-5 h-5 text-brand-red flex-shrink-0 mt-0.5" />
@@ -71,18 +71,18 @@ export default function Footer() {
               </div>
             </div>
             <div className="pt-2">
-              <p className="text-xs text-brand-gray">Soporte Técnico de Emergencia 24/7 disponible para contratos corporativos.</p>
+              <p className="text-xs text-gray-400">Soporte Técnico de Emergencia 24/7 disponible para contratos corporativos.</p>
             </div>
           </div>
         </div>
 
         <hr className="my-10 border-brand-gray/25" />
 
-        <div className="flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-gray-500">
+        <div className="flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-gray-400">
           <p>© {currentYear} GKM Technology S.A.C. Todos los derechos reservados.</p>
           <div className="flex items-center gap-6">
-            <a href="#" className="hover:text-white transition-colors">Políticas de Privacidad</a>
-            <a href="#" className="hover:text-white transition-colors">Términos de Servicio</a>
+            <a href="#" className="text-gray-400 hover:text-white transition-colors">Políticas de Privacidad</a>
+            <a href="#" className="text-gray-400 hover:text-white transition-colors">Términos de Servicio</a>
             <button onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })} className="p-2 rounded bg-brand-gray/10 text-gray-400 hover:text-white hover:bg-brand-red transition-colors cursor-pointer flex items-center gap-1" title="Volver Arriba">
               <ArrowUp className="w-3.5 h-3.5" />
               <span>Subir</span>
