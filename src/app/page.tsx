@@ -7,7 +7,7 @@ import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { 
   ShieldCheck, Cpu, Wrench, Server, Map, Award, Building2, Layers, 
-  ArrowRight, Search, FileText, ChevronDown, ChevronRight, MapPin, Monitor, 
+  ArrowRight, Search, FileText, ChevronDown, MapPin, Monitor, 
   Phone, Mail, Warehouse, Store, Zap, Heart 
 } from 'lucide-react';
 import { useRouter } from 'next/navigation';
@@ -47,7 +47,7 @@ function StatItem({ label, value, suffix, icon: Icon }: { label: string; value: 
       <div className="w-12 h-12 rounded-full bg-brand-red/10 flex items-center justify-center mx-auto mb-5 group-hover:scale-110 group-hover:shadow-[0_0_20px_rgba(229,40,34,0.2)] transition-all duration-500">
         <Icon className="w-5 h-5 text-brand-red" />
       </div>
-      <div className="font-display font-extrabold text-4xl md:text-5xl text-brand-dark mb-2 tabular-nums">
+      <div className="font-display font-extrabold text-3xl md:text-4xl text-brand-dark mb-2 tabular-nums">
         {count}{suffix}
       </div>
       <div className="text-xs text-brand-gray uppercase tracking-wider font-semibold">
@@ -120,7 +120,7 @@ function CaseCard({ brand, logo, status, metrics, description, tags }: {
         <div className="grid grid-cols-3 gap-4">
           {metrics.map((m, i) => (
             <div key={m.label} className="text-center">
-              <div className="font-display font-extrabold text-2xl md:text-3xl text-brand-dark tabular-nums">{counts[i]}{m.suffix}</div>
+              <div className="font-display font-extrabold text-base sm:text-lg md:text-xl text-brand-dark tabular-nums">{counts[i]}{m.suffix}</div>
               <div className="text-[9px] text-brand-gray font-bold uppercase tracking-widest mt-1">{m.label}</div>
             </div>
           ))}
@@ -202,6 +202,24 @@ export default function Home() {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [slideDirection, setSlideDirection] = useState(0);
   const [isPaused, setIsPaused] = useState(false);
+  const [isDesktop, setIsDesktop] = useState(false);
+  const [isDesktopLg, setIsDesktopLg] = useState(false);
+
+  useEffect(() => {
+    const mq = window.matchMedia('(min-width: 768px)');
+    setIsDesktop(mq.matches);
+    const handler = (e: MediaQueryListEvent) => setIsDesktop(e.matches);
+    mq.addEventListener('change', handler);
+    return () => mq.removeEventListener('change', handler);
+  }, []);
+
+  useEffect(() => {
+    const mq = window.matchMedia('(min-width: 1280px)');
+    setIsDesktopLg(mq.matches);
+    const handler = (e: MediaQueryListEvent) => setIsDesktopLg(e.matches);
+    mq.addEventListener('change', handler);
+    return () => mq.removeEventListener('change', handler);
+  }, []);
 
   const heroSlides = [
     {
@@ -452,134 +470,176 @@ export default function Home() {
   const testimonialsSectionRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
+    if (typeof window === 'undefined') return;
+    const mq = window.matchMedia('(min-width: 768px)');
     if (!textRef.current || !headingRef.current || !badgeRef.current || !pillarsGridRef.current) return;
 
-    const ctx = gsap.context(() => {
-      const badge = badgeRef.current!;
-      gsap.set(badge, { y: -15, opacity: 0 });
-      gsap.to(badge, {
-        y: 0, opacity: 1, duration: 0.6, ease: "power2.out",
-        scrollTrigger: { trigger: textRef.current, start: "top 80%", toggleActions: "play none none none" },
-      });
+    let ctx: gsap.Context | null = null;
 
-      const lines = headingRef.current!.querySelectorAll('.heading-line');
-      gsap.set(lines, { y: 50, opacity: 0 });
-      gsap.to(lines, {
-        y: 0, opacity: 1, duration: 0.7, stagger: 0.12, ease: "power3.out",
-        scrollTrigger: { trigger: textRef.current, start: "top 75%", toggleActions: "play none none none" },
-      });
+    const setup = () => {
+      if (ctx) { ctx.revert(); ScrollTrigger.getAll().forEach(st => st.kill()); }
+      if (!mq.matches) return;
 
-      const para = textRef.current!.querySelector('p');
-      if (para) {
-        gsap.set(para, { y: 20, opacity: 0 });
-        gsap.to(para, {
-          y: 0, opacity: 1, duration: 0.6, delay: 0.3, ease: "power2.out",
+      ctx = gsap.context(() => {
+        const badge = badgeRef.current!;
+        gsap.set(badge, { y: -15, opacity: 0 });
+        gsap.to(badge, {
+          y: 0, opacity: 1, duration: 0.6, ease: "power2.out",
+          scrollTrigger: { trigger: textRef.current, start: "top 80%", toggleActions: "play none none none" },
+        });
+
+        const lines = headingRef.current!.querySelectorAll('.heading-line');
+        gsap.set(lines, { y: 50, opacity: 0 });
+        gsap.to(lines, {
+          y: 0, opacity: 1, duration: 0.7, stagger: 0.12, ease: "power3.out",
           scrollTrigger: { trigger: textRef.current, start: "top 75%", toggleActions: "play none none none" },
         });
-      }
 
-      if (videoRef.current) {
-        gsap.set(videoRef.current, { y: 30, opacity: 0, scale: 0.95 });
-        gsap.to(videoRef.current, {
-          y: 0, opacity: 1, scale: 1,
-          duration: 0.7, delay: 0.15, ease: "power3.out",
-          scrollTrigger: { trigger: videoRef.current, start: "top 80%", toggleActions: "play none none none" },
-        });
-      }
+        const para = textRef.current!.querySelector('p');
+        if (para) {
+          gsap.set(para, { y: 20, opacity: 0 });
+          gsap.to(para, {
+            y: 0, opacity: 1, duration: 0.6, delay: 0.3, ease: "power2.out",
+            scrollTrigger: { trigger: textRef.current, start: "top 75%", toggleActions: "play none none none" },
+          });
+        }
 
-      if (headingUnderlineRef.current) {
-        gsap.set(headingUnderlineRef.current, { scaleX: 0, transformOrigin: "left center" });
-        gsap.to(headingUnderlineRef.current, {
-          scaleX: 1, duration: 0.8, delay: 0.4, ease: "power3.out",
-          scrollTrigger: { trigger: textRef.current, start: "top 75%", toggleActions: "play none none none" },
-        });
-      }
+        if (videoRef.current) {
+          gsap.set(videoRef.current, { y: 30, opacity: 0, scale: 0.95 });
+          gsap.to(videoRef.current, {
+            y: 0, opacity: 1, scale: 1,
+            duration: 0.7, delay: 0.15, ease: "power3.out",
+            scrollTrigger: { trigger: videoRef.current, start: "top 80%", toggleActions: "play none none none" },
+          });
+        }
 
-      if (dividerRef.current) {
-        gsap.set(dividerRef.current, { scaleX: 0, transformOrigin: "center center" });
-        gsap.to(dividerRef.current, {
-          scaleX: 1, duration: 0.9, delay: 0.2, ease: "power3.inOut",
-          scrollTrigger: { trigger: pillarsGridRef.current, start: "top 85%", toggleActions: "play none none none" },
-        });
-      }
+        if (headingUnderlineRef.current) {
+          gsap.set(headingUnderlineRef.current, { scaleX: 0, transformOrigin: "left center" });
+          gsap.to(headingUnderlineRef.current, {
+            scaleX: 1, duration: 0.8, delay: 0.4, ease: "power3.out",
+            scrollTrigger: { trigger: textRef.current, start: "top 75%", toggleActions: "play none none none" },
+          });
+        }
 
-      const pillarDirs = [
-        { rotateY: -8, rotateX: 4 },
-        { rotateY: 8, rotateX: 4 },
-        { rotateY: -8, rotateX: -4 },
-        { rotateY: 8, rotateX: -4 },
-      ];
+        if (dividerRef.current) {
+          gsap.set(dividerRef.current, { scaleX: 0, transformOrigin: "center center" });
+          gsap.to(dividerRef.current, {
+            scaleX: 1, duration: 0.9, delay: 0.2, ease: "power3.inOut",
+            scrollTrigger: { trigger: pillarsGridRef.current, start: "top 85%", toggleActions: "play none none none" },
+          });
+        }
 
-      pillarRefs.current.forEach((card, idx) => {
-        if (!card) return;
-        const dir = pillarDirs[idx];
-        gsap.set(card, { y: 60, opacity: 0, rotateX: dir.rotateX, rotateY: dir.rotateY });
-        gsap.to(card, {
-          y: 0, opacity: 1, rotateX: 0, rotateY: 0,
-          duration: 0.8, delay: idx * 0.12, ease: "power3.out",
-          scrollTrigger: { trigger: pillarsGridRef.current, start: "top 80%", toggleActions: "play none none none" },
+        const pillarDirs = [
+          { rotateY: -8, rotateX: 4 },
+          { rotateY: 8, rotateX: 4 },
+          { rotateY: -8, rotateX: -4 },
+          { rotateY: 8, rotateX: -4 },
+        ];
+
+        pillarRefs.current.forEach((card, idx) => {
+          if (!card) return;
+          const dir = pillarDirs[idx];
+          gsap.set(card, { y: 60, opacity: 0, rotateX: dir.rotateX, rotateY: dir.rotateY });
+          gsap.to(card, {
+            y: 0, opacity: 1, rotateX: 0, rotateY: 0,
+            duration: 0.8, delay: idx * 0.12, ease: "power3.out",
+            scrollTrigger: { trigger: pillarsGridRef.current, start: "top 80%", toggleActions: "play none none none" },
+          });
         });
       });
-    });
+    };
 
-    return () => { ctx.revert(); ScrollTrigger.getAll().forEach(st => st.kill()); };
+    setup();
+    mq.addEventListener('change', setup);
+
+    return () => {
+      mq.removeEventListener('change', setup);
+      if (ctx) { ctx.revert(); ScrollTrigger.getAll().forEach(st => st.kill()); }
+    };
   }, []);
 
   useEffect(() => {
     if (!timelineSectionRef.current || !timelineInnerRef.current) return;
 
-    const mq = window.matchMedia('(min-width: 1024px)');
-    if (!mq.matches) return;
+    const mq = window.matchMedia('(min-width: 1280px)');
 
-    const ctx = gsap.context(() => {
-      const track = timelineInnerRef.current!;
-      const scrollDistance = window.innerWidth * 0.4;
+    let ctx: gsap.Context | null = null;
 
-      const tl = gsap.timeline({
-        scrollTrigger: {
-          trigger: timelineSectionRef.current,
-          start: "top top",
-          end: () => `+=${scrollDistance + window.innerHeight}`,
-          pin: true,
-          scrub: 1.5,
-          invalidateOnRefresh: true,
-        }
+    const setup = () => {
+      if (ctx) { ctx.revert(); }
+      if (!mq.matches) return;
+
+      ctx = gsap.context(() => {
+        const track = timelineInnerRef.current!;
+        const scrollDistance = window.innerWidth * 0.4;
+
+        const tl = gsap.timeline({
+          scrollTrigger: {
+            trigger: timelineSectionRef.current,
+            start: "top top",
+            end: () => `+=${scrollDistance + window.innerHeight}`,
+            pin: true,
+            scrub: 1.5,
+            invalidateOnRefresh: true,
+          }
+        });
+
+        tl.to(track, { x: -scrollDistance, ease: "none" }, 0);
+
+        timelineCardRefs.current.forEach((card, idx) => {
+          if (!card) return;
+          tl.from(card, {
+            y: 80, opacity: 0, rotateX: 8,
+            duration: 0.15,
+            ease: "power3.out",
+          }, idx * 0.08);
+        });
       });
+    };
 
-      tl.to(track, { x: -scrollDistance, ease: "none" }, 0);
+    setup();
+    mq.addEventListener('change', setup);
 
-      timelineCardRefs.current.forEach((card, idx) => {
-        if (!card) return;
-        tl.from(card, {
-          y: 80, opacity: 0, rotateX: 8,
-          duration: 0.15,
-          ease: "power3.out",
-        }, idx * 0.08);
-      });
-    });
-
-    return () => { ctx.revert(); };
+    return () => {
+      mq.removeEventListener('change', setup);
+      if (ctx) { ctx.revert(); }
+    };
   }, []);
 
   useLayoutEffect(() => {
+    if (typeof window === 'undefined') return;
+    const mq = window.matchMedia('(min-width: 768px)');
     if (!sucursalesCardRefs.current) return;
 
     const cards = sucursalesCardRefs.current.filter(Boolean) as HTMLDivElement[];
     if (cards.length === 0) return;
 
-    const ctx = gsap.context(() => {
-      cards.forEach((card) => {
-        const img = card.querySelector('.parallax-img') as HTMLElement;
-        if (!img) return;
-        gsap.to(img, {
-          y: 15, ease: "none",
-          scrollTrigger: { trigger: card, start: "top bottom", end: "bottom top", scrub: 1 },
+    let ctx: gsap.Context | null = null;
+
+    const setup = () => {
+      if (ctx) { ctx.revert(); ScrollTrigger.getAll().forEach(st => st.kill()); }
+      if (!mq.matches) return;
+
+      ctx = gsap.context(() => {
+        cards.forEach((card) => {
+          const img = card.querySelector('.parallax-img') as HTMLElement;
+          if (!img) return;
+          gsap.to(img, {
+            y: 15, ease: "none",
+            scrollTrigger: { trigger: card, start: "top bottom", end: "bottom top", scrub: 1 },
+          });
         });
       });
-    });
+      ScrollTrigger.refresh();
+    };
 
-    ScrollTrigger.refresh();
-    return () => { ctx.revert(); };
+    setup();
+    mq.addEventListener('change', setup);
+
+    return () => {
+      mq.removeEventListener('change', setup);
+      if (ctx) { ctx.revert(); ScrollTrigger.getAll().forEach(st => st.kill()); }
+    };
   }, []);
 
   const [activeTestimonial, setActiveTestimonial] = useState(0);
@@ -607,7 +667,7 @@ export default function Home() {
   return (
     <div className="font-sans text-gray-800">
       <section
-        className="relative min-h-screen bg-brand-dark flex items-center justify-center text-white -mt-20 pt-20 pb-24 px-4 sm:px-6 lg:px-8"
+        className="relative min-h-screen bg-brand-dark flex items-center justify-center text-white -mt-20 pt-20 pb-16 md:pb-24 px-4 sm:px-6 lg:px-8"
         onMouseEnter={() => setIsPaused(true)}
         onMouseLeave={() => setIsPaused(false)}
       >
@@ -698,22 +758,6 @@ export default function Home() {
           </AnimatePresence>
         </div>
 
-        <button
-          onClick={prevSlide}
-          className="absolute left-4 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-white/5 border border-white/10 hover:bg-white/15 hover:border-white/30 flex items-center justify-center text-white/60 hover:text-white transition-all duration-300 backdrop-blur-sm z-20 cursor-pointer"
-          aria-label="Anterior servicio"
-        >
-          <ChevronRight className="w-5 h-5 rotate-180" />
-        </button>
-
-        <button
-          onClick={nextSlide}
-          className="absolute right-4 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-white/5 border border-white/10 hover:bg-white/15 hover:border-white/30 flex items-center justify-center text-white/60 hover:text-white transition-all duration-300 backdrop-blur-sm z-20 cursor-pointer"
-          aria-label="Siguiente servicio"
-        >
-          <ChevronRight className="w-5 h-5" />
-        </button>
-
         <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex items-center gap-3 z-20">
           {heroSlides.map((_, idx) => (
             <button
@@ -754,7 +798,7 @@ export default function Home() {
       </section>
 
       {/* EXCELENCIA OPERACIONAL */}
-      <section className="relative bg-[#F8F9F9] py-24 px-4 sm:px-6 lg:px-8 overflow-x-hidden">
+      <section className="relative bg-[#F8F9F9] py-16 md:py-24 px-4 sm:px-6 lg:px-8 overflow-x-hidden">
         <div className="absolute inset-0 pointer-events-none overflow-hidden">
           <div className="absolute inset-0 opacity-[0.08] bg-[linear-gradient(to_right,#808080_1px,transparent_1px),linear-gradient(to_bottom,#808080_1px,transparent_1px)] bg-[size:30px_30px]" />
           <div className="absolute inset-0 opacity-[0.06] bg-[radial-gradient(circle,#808080_0.7px,transparent_0.7px)] bg-[size:14px_14px]" />
@@ -762,25 +806,59 @@ export default function Home() {
 
         <div className="max-w-7xl mx-auto relative z-10">
           <div className="mb-10">
-            <span ref={badgeRef} className="inline-flex items-center gap-1.5 text-brand-red font-bold text-xs tracking-widest uppercase"><span className="w-1.5 h-1.5 rounded-full bg-brand-red" />Excelencia Operacional</span>
+            <motion.span
+              key={`badge-${isDesktop}`}
+              ref={badgeRef}
+              initial={isDesktop ? undefined : { opacity: 0, y: -15 }}
+              whileInView={isDesktop ? undefined : { opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6, ease: "easeOut" }}
+              className="inline-flex items-center gap-1.5 text-brand-red font-bold text-xs tracking-widest uppercase"
+            >
+              <span className="w-1.5 h-1.5 rounded-full bg-brand-red" />Excelencia Operacional
+            </motion.span>
           </div>
 
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
-            <div ref={textRef} className="lg:col-span-6 space-y-6">
+            <motion.div
+              key={`text-${isDesktop}`}
+              ref={textRef}
+              initial={isDesktop ? undefined : { opacity: 0, y: 30 }}
+              whileInView={isDesktop ? undefined : { opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-10%" }}
+              transition={{ duration: 0.6, ease: "easeOut" }}
+              className="lg:col-span-6 space-y-6"
+            >
               <h2 ref={headingRef} className="font-display font-extrabold text-brand-dark leading-none tracking-tight">
                 <span className="heading-line block text-lg sm:text-2xl md:text-3xl font-normal text-brand-gray mb-3">Un aliado tecnológico para</span>
                 <span className="heading-line block text-3xl sm:text-5xl md:text-7xl leading-[1.05]">OPERACIONES QUE NO</span>
                 <span className="heading-line block text-3xl sm:text-5xl md:text-7xl leading-[1.05] text-brand-red mt-1">PUEDEN DETENERSE</span>
               </h2>
 
-              <div ref={headingUnderlineRef} className="h-[3px] w-full bg-gradient-to-r from-brand-red via-brand-red to-brand-red/40 rounded-full origin-left" />
+              <motion.div
+                key={`underline-${isDesktop}`}
+                ref={headingUnderlineRef}
+                initial={isDesktop ? undefined : { scaleX: 0 }}
+                whileInView={isDesktop ? undefined : { scaleX: 1 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.8, delay: 0.3, ease: "easeOut" }}
+                className="h-[3px] w-full bg-gradient-to-r from-brand-red via-brand-red to-brand-red/40 rounded-full origin-left"
+              />
 
               <p className="text-brand-gray text-sm md:text-base leading-relaxed font-light">
                 Ayudamos a empresas de diversos sectores a mantener la continuidad de sus operaciones mediante soluciones integrales de infraestructura tecnológica, soporte TI, videovigilancia y servicio técnico autorizado. Nuestra combinación de experiencia, cobertura nacional y capacidad de ejecución nos permite responder con rapidez a los desafíos tecnológicos de organizaciones que requieren un servicio confiable y orientado a resultados.
               </p>
-            </div>
+            </motion.div>
 
-            <div ref={videoRef} className="lg:col-span-6">
+            <motion.div
+              key={`video-${isDesktop}`}
+              ref={videoRef}
+              initial={isDesktop ? undefined : { opacity: 0, scale: 0.95 }}
+              whileInView={isDesktop ? undefined : { opacity: 1, scale: 1 }}
+              viewport={{ once: true, margin: "-10%" }}
+              transition={{ duration: 0.7, ease: "easeOut" }}
+              className="lg:col-span-6"
+            >
               <div className="relative aspect-video rounded-2xl overflow-hidden shadow-xl bg-brand-dark/5">
                 <iframe
                   className="absolute inset-0 w-full h-full"
@@ -791,18 +869,38 @@ export default function Home() {
                 />
                 <div className="absolute inset-0 ring-1 ring-inset ring-black/10 rounded-2xl pointer-events-none" />
               </div>
-            </div>
+            </motion.div>
             </div>
 
-          <div ref={dividerRef} className="h-px w-2/5 bg-gradient-to-r from-transparent via-brand-red/60 to-transparent mx-auto origin-center mb-12" />
+          <motion.div
+            key={`divider-${isDesktop}`}
+            ref={dividerRef}
+            initial={isDesktop ? undefined : { scaleX: 0 }}
+            whileInView={isDesktop ? undefined : { scaleX: 1 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.9, ease: "easeInOut" }}
+            className="h-px w-2/5 bg-gradient-to-r from-transparent via-brand-red/60 to-transparent mx-auto origin-center mb-12"
+          />
 
-          <div ref={pillarsGridRef} className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 [perspective:1200px]">
+          <motion.div
+            key={`pillars-${isDesktop}`}
+            ref={pillarsGridRef}
+            initial={isDesktop ? undefined : "hidden"}
+            whileInView={isDesktop ? undefined : "visible"}
+            viewport={{ once: true, margin: "-10%" }}
+            variants={isDesktop ? undefined : { visible: { transition: { staggerChildren: 0.12 } } }}
+            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 [perspective:1200px]"
+          >
             {pillars.map((pillar, idx) => {
               const PillarIcon = pillar.icon;
               return (
-                <div
-                  key={pillar.title}
+                <motion.div
+                  key={`${pillar.title}-${isDesktop}`}
                   ref={el => { pillarRefs.current[idx] = el; }}
+                  initial={isDesktop ? undefined : { opacity: 0, y: 30 }}
+                  whileInView={isDesktop ? undefined : { opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.5, ease: "easeOut" }}
                   className="group relative p-6 rounded-2xl bg-white border border-gray-100/80 shadow-md [transform-style:preserve-3d] will-change-transform cursor-default transition-all duration-500 hover:shadow-xl hover:border-brand-red/20 hover:-translate-y-1"
                   onMouseMove={(e) => handlePillarTilt(e, idx)}
                   onMouseLeave={() => resetPillarTilt(idx)}
@@ -818,19 +916,19 @@ export default function Home() {
                       <p className="text-xs text-brand-gray leading-relaxed font-light">{pillar.desc}</p>
                     </div>
                   </div>
-                </div>
+                </motion.div>
               );
             })}
-          </div>
+          </motion.div>
         </div>
       </section>
 
-      <section ref={timelineSectionRef} className="relative bg-brand-dark text-white py-28 min-h-screen overflow-x-clip">
-        <div className="absolute top-1/2 left-1/2 w-[600px] h-[600px] bg-brand-red/5 rounded-full blur-3xl -translate-x-1/2 -translate-y-1/2 pointer-events-none" />
+      <section ref={timelineSectionRef} className="relative bg-brand-dark text-white py-16 md:py-28 min-h-screen overflow-x-clip">
+        <div className="absolute top-1/2 left-1/2 w-[300px] md:w-[600px] h-[300px] md:h-[600px] bg-brand-red/5 rounded-full blur-3xl -translate-x-1/2 -translate-y-1/2 pointer-events-none" />
         <div className="absolute inset-0 opacity-[0.02] bg-[linear-gradient(to_right,#808080_1px,transparent_1px),linear-gradient(to_bottom,#808080_1px,transparent_1px)] bg-[size:40px_40px] pointer-events-none" />
 
         <div className="relative z-10">
-          <div ref={timelineHeaderRef} className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-14">
+          <div ref={timelineHeaderRef} className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-10 md:mb-14">
             <span className="inline-flex items-center gap-1.5 text-brand-red font-bold text-xs tracking-widest uppercase mb-4">
               <span className="w-1.5 h-1.5 rounded-full bg-brand-red" />Garantía Metodológica
             </span>
@@ -842,22 +940,26 @@ export default function Home() {
           </div>
 
           <div ref={timelineTrackRef} className="overflow-visible">
-            <div ref={timelineInnerRef} className="flex flex-col lg:flex-row gap-6 lg:gap-8 lg:w-[140vw] lg:pl-[calc((100vw-1280px)/2+2rem)] lg:pr-8 lg:relative">
+            <div ref={timelineInnerRef} className="flex flex-col md:grid md:grid-cols-2 xl:flex xl:flex-row gap-6 xl:gap-8 xl:w-[140vw] xl:pl-[calc((100vw-1280px)/2+2rem)] xl:pr-8 xl:relative">
               {processTimeline.map((p, idx) => {
                 const StepIcon = p.icon;
                 return (
-                  <div
-                    key={p.step}
+                  <motion.div
+                    key={`${p.step}-${isDesktopLg}`}
                     ref={el => { timelineCardRefs.current[idx] = el; }}
+                    initial={isDesktopLg ? undefined : { opacity: 0, y: 30 }}
+                    whileInView={isDesktopLg ? undefined : { opacity: 1, y: 0 }}
+                    viewport={{ once: true, margin: "-50px" }}
+                    transition={{ duration: 0.5, ease: "easeOut", delay: idx * 0.1 }}
                     className="relative flex-1 group"
                   >
                     {idx < processTimeline.length - 1 && (
-                      <div className="hidden lg:block absolute top-[260px] left-[calc(50%+2.5rem)] right-[-2rem] h-px bg-gradient-to-r from-brand-red/40 to-brand-red/20" />
+                      <div className="hidden xl:block absolute top-[260px] left-[calc(50%+2.5rem)] right-[-2rem] h-px bg-gradient-to-r from-brand-red/40 to-brand-red/20" />
                     )}
 
                     <div className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl h-full overflow-hidden flex flex-col transition-all duration-500 group-hover:bg-white/10 group-hover:border-brand-red/30 group-hover:shadow-[0_0_30px_rgba(229,40,34,0.1)]">
                       {/* Image Header */}
-                      <div className="relative h-[260px] flex-shrink-0 overflow-hidden">
+                      <div className="relative h-[200px] md:h-[260px] flex-shrink-0 overflow-hidden">
                         <img
                           src={timelineImages[idx]}
                           alt={p.title}
@@ -867,13 +969,13 @@ export default function Home() {
                       </div>
 
                       {/* Step Circle */}
-                      <div className="hidden lg:flex absolute left-1/2 -translate-x-1/2 w-12 h-12 rounded-full bg-brand-red border-2 border-white/20 text-white items-center justify-center font-display font-extrabold text-lg shadow-lg shadow-brand-red/30 z-10 top-[236px]">
+                      <div className="hidden xl:flex absolute left-1/2 -translate-x-1/2 w-12 h-12 rounded-full bg-brand-red border-2 border-white/20 text-white items-center justify-center font-display font-extrabold text-lg shadow-lg shadow-brand-red/30 z-10 top-[236px]">
                         {p.step}
                       </div>
 
                       {/* Content */}
                       <div className="p-6 pt-10 flex-1">
-                        <div className="lg:hidden w-12 h-12 rounded-full bg-brand-red/10 border-2 border-brand-red/30 text-brand-red flex items-center justify-center font-display font-extrabold text-lg mb-4">
+                        <div className="xl:hidden w-12 h-12 rounded-full bg-brand-red/10 border-2 border-brand-red/30 text-brand-red flex items-center justify-center font-display font-extrabold text-lg mb-4">
                           {p.step}
                         </div>
                         <div className="flex items-center gap-3 mb-3">
@@ -885,15 +987,16 @@ export default function Home() {
                         <p className="text-xs lg:text-[13px] text-gray-400 leading-relaxed font-light">{p.desc}</p>
                       </div>
                     </div>
-                  </div>
+                  </motion.div>
                 );
               })}
+
             </div>
           </div>
         </div>
       </section>
 
-      <section className="relative bg-[#F8F9F9] py-24 overflow-x-clip border-b border-gray-100">
+      <section className="relative bg-[#F8F9F9] py-16 md:py-24 overflow-x-clip border-b border-gray-100">
         <div className="absolute inset-0 pointer-events-none overflow-hidden">
           <div className="absolute inset-0 opacity-[0.08] bg-[linear-gradient(to_right,#808080_1px,transparent_1px),linear-gradient(to_bottom,#808080_1px,transparent_1px)] bg-[size:30px_30px]" />
           <div className="absolute inset-0 opacity-[0.06] bg-[radial-gradient(circle,#808080_0.7px,transparent_0.7px)] bg-[size:14px_14px]" />
@@ -968,9 +1071,9 @@ export default function Home() {
       {/* NUESTROS SERVICIOS */}
       <section className="relative bg-brand-dark text-white overflow-x-clip">
         <div className="absolute inset-0 opacity-[0.03] bg-[linear-gradient(to_right,#808080_1px,transparent_1px),linear-gradient(to_bottom,#808080_1px,transparent_1px)] bg-[size:40px_40px] pointer-events-none" />
-        <div className="absolute top-1/3 left-1/2 w-[800px] h-[800px] bg-brand-red/5 rounded-full blur-3xl -translate-x-1/2 -translate-y-1/2 pointer-events-none" />
+        <div className="absolute top-1/3 left-1/2 w-[400px] md:w-[800px] h-[400px] md:h-[800px] bg-brand-red/5 rounded-full blur-3xl -translate-x-1/2 -translate-y-1/2 pointer-events-none" />
 
-        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-28">
+        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 md:py-28">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -989,7 +1092,7 @@ export default function Home() {
             </p>
           </motion.div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
             {servicios.map((s) => (
               <ServiceCard key={s.title} {...s} />
             ))}
@@ -998,7 +1101,7 @@ export default function Home() {
       </section>
 
       {/* CASOS DE ÉXITO */}
-      <section className="relative bg-[#F8F9F9] text-brand-dark py-24 overflow-hidden">
+      <section className="relative bg-[#F8F9F9] text-brand-dark py-16 md:py-24 overflow-hidden">
         <div className="absolute inset-0 pointer-events-none overflow-hidden">
           <div className="absolute inset-0 opacity-[0.08] bg-[linear-gradient(to_right,#808080_1px,transparent_1px),linear-gradient(to_bottom,#808080_1px,transparent_1px)] bg-[size:30px_30px]" />
           <div className="absolute inset-0 opacity-[0.06] bg-[radial-gradient(circle,#808080_0.7px,transparent_0.7px)] bg-[size:14px_14px]" />
@@ -1023,7 +1126,7 @@ export default function Home() {
             </p>
           </motion.div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
             {casosExito.map((c) => (
               <CaseCard key={c.brand} {...c} />
             ))}
@@ -1033,9 +1136,9 @@ export default function Home() {
 
       <section ref={sucursalesSectionRef} className="relative bg-brand-dark text-white overflow-x-clip">
         <div className="absolute inset-0 opacity-[0.03] bg-[linear-gradient(to_right,#808080_1px,transparent_1px),linear-gradient(to_bottom,#808080_1px,transparent_1px)] bg-[size:40px_40px] pointer-events-none" />
-        <div className="absolute top-1/3 left-1/2 w-[600px] h-[600px] bg-brand-red/5 rounded-full blur-3xl -translate-x-1/2 -translate-y-1/2 pointer-events-none" />
+        <div className="absolute top-1/3 left-1/2 w-[300px] md:w-[600px] h-[300px] md:h-[600px] bg-brand-red/5 rounded-full blur-3xl -translate-x-1/2 -translate-y-1/2 pointer-events-none" />
 
-        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-28">
+        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 md:py-28">
           <motion.div
               initial={{ opacity: 0, y: 35 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -1076,13 +1179,13 @@ export default function Home() {
                   }}
                   className="group relative bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl overflow-hidden transition-colors duration-500 hover:bg-white/10 hover:border-brand-red/30 hover:shadow-[0_0_30px_rgba(229,40,34,0.1)]"
                 >
-                  <div className="relative h-[360px] bg-white/5">
+                  <div className="relative h-[250px] md:h-[360px]">
                     <Image
                       src={suc.image}
                       alt={suc.title}
                       fill
                       sizes="(max-width: 768px) 100vw, 33vw"
-                      className="object-contain transition-all duration-700 group-hover:scale-105 parallax-img"
+                      className="object-cover transition-all duration-700 group-hover:scale-105 parallax-img"
                     />
                   </div>
 
@@ -1107,7 +1210,8 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="relative bg-[#F8F9F9] text-brand-dark py-24 overflow-hidden">
+      {/* ESTADÍSTICAS */}
+      <section className="relative bg-[#F8F9F9] text-brand-dark py-16 md:py-24 overflow-hidden">
         <div className="absolute inset-0 pointer-events-none overflow-hidden">
           <div className="absolute inset-0 opacity-[0.08] bg-[linear-gradient(to_right,#808080_1px,transparent_1px),linear-gradient(to_bottom,#808080_1px,transparent_1px)] bg-[size:30px_30px]" />
           <div className="absolute inset-0 opacity-[0.06] bg-[radial-gradient(circle,#808080_0.7px,transparent_0.7px)] bg-[size:14px_14px]" />
@@ -1148,9 +1252,9 @@ export default function Home() {
 
       <section ref={testimonialsSectionRef} className="relative bg-brand-dark text-white overflow-x-clip">
         <div className="absolute inset-0 opacity-[0.03] bg-[linear-gradient(to_right,#808080_1px,transparent_1px),linear-gradient(to_bottom,#808080_1px,transparent_1px)] bg-[size:40px_40px] pointer-events-none" />
-        <div className="absolute top-1/2 left-1/2 w-[800px] h-[800px] bg-brand-red/5 rounded-full blur-3xl -translate-x-1/2 -translate-y-1/2 pointer-events-none" />
+        <div className="absolute top-1/2 left-1/2 w-[400px] md:w-[800px] h-[400px] md:h-[800px] bg-brand-red/5 rounded-full blur-3xl -translate-x-1/2 -translate-y-1/2 pointer-events-none" />
 
-        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-24 pb-8">
+        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-16 md:pt-24 pb-8">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}

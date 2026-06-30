@@ -198,11 +198,11 @@ export default function Header() {
       <AnimatePresence>
         {mobileMenuOpen && (
           <motion.div
-            initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: 'auto' }}
-            exit={{ opacity: 0, height: 0 }}
-            transition={{ duration: 0.25, ease: 'easeInOut' }}
-            className="md:hidden border-t border-brand-gray/20 bg-brand-dark/98"
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -10 }}
+            transition={{ duration: 0.2, ease: 'easeOut' }}
+            className="md:hidden absolute top-full left-0 right-0 border-t border-brand-gray/20 bg-brand-dark/98 backdrop-blur-md shadow-xl z-50"
           >
             <div className="px-4 pt-2 pb-6 space-y-1">
               <button onClick={() => handleNav('/')} className={`block w-full text-left px-3 py-3 rounded-lg text-base font-medium ${isActive('/') ? 'bg-brand-red/10 text-brand-red' : 'text-gray-300 hover:bg-brand-gray/10 hover:text-white'}`}>Inicio</button>
