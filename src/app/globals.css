@@ -2,7 +2,7 @@
 
 @theme inline {
   --font-sans: var(--font-montserrat), sans-serif;
-  --font-display: "Acumin Variable Concept", var(--font-space-grotesk), sans-serif;
+  --font-display: var(--font-space-grotesk), sans-serif;
   --color-brand-red: #e52822;
   --color-brand-dark: #020202;
   --color-brand-gray: #575756;
