@@ -243,12 +243,12 @@ export default function Nosotros() {
         <div className="absolute inset-0 opacity-[0.03] bg-[linear-gradient(to_right,#808080_1px,transparent_1px),linear-gradient(to_bottom,#808080_1px,transparent_1px)] bg-[size:40px_40px] pointer-events-none" />
 
         <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 items-center min-h-[450px]">
+          <div className="relative grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-10 lg:gap-16 items-start md:items-center">
             <motion.div
               variants={{ hidden: { opacity: 0 }, visible: { opacity: 1, transition: { staggerChildren: 0.15 } } }}
               initial="hidden"
               animate="visible"
-              className="space-y-5"
+              className="relative z-10 space-y-5"
             >
               <motion.span
                 variants={{ hidden: { opacity: 0, scale: 0.9 }, visible: { opacity: 1, scale: 1, transition: { type: "spring", stiffness: 100 } } }}
@@ -283,7 +283,7 @@ export default function Nosotros() {
               </motion.div>
             </motion.div>
 
-            <div className="relative h-[340px] md:h-[480px] flex items-center justify-center">
+            <div className="absolute inset-0 md:relative md:inset-auto opacity-[0.06] md:opacity-100 pointer-events-none md:pointer-events-auto md:h-[360px] lg:h-[480px] md:flex md:items-center md:justify-center">
               <NetworkTopology />
             </div>
           </div>
@@ -326,7 +326,7 @@ export default function Nosotros() {
             <div className="h-[3px] w-full max-w-[200px] bg-gradient-to-r from-brand-red via-brand-red to-brand-red/40 rounded-full mt-4 mx-auto" />
           </motion.div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 items-center">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-10 lg:gap-16 items-center">
             <div className="relative">
               <div className="absolute left-[19px] top-0 bottom-0 w-px bg-gradient-to-b from-brand-red via-white/10 to-transparent" />
 
@@ -355,7 +355,7 @@ export default function Nosotros() {
               whileInView={{ opacity: 1, scale: 1 }}
               viewport={{ once: true }}
               transition={{ duration: 0.7 }}
-              className="relative h-[400px] md:h-[520px] rounded-2xl overflow-hidden shadow-xl"
+              className="relative h-[350px] md:h-[450px] lg:h-[520px] rounded-2xl overflow-hidden shadow-xl"
             >
               <Image
                 src="/images/nosotros/equipo-trayectoria.webp"

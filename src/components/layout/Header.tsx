@@ -138,7 +138,7 @@ export default function Header() {
               onClick={() => handleNav('/portal')}
               className={`flex items-center gap-2 px-5 py-2.5 rounded-lg font-sans font-semibold text-sm transition-all border shadow-md cursor-pointer hover:scale-105 active:scale-95 ${isActive('/portal') ? 'bg-white text-brand-dark border-white' : 'bg-brand-red hover:bg-brand-red text-white border-brand-red hover:shadow-brand-red/30'}`}
             >
-              <span>Portal B2B</span>
+              <span>Portal</span>
               <div className="w-1.5 h-1.5 rounded-full bg-green-400 animate-ping" />
             </button>
           </div>
@@ -177,7 +177,7 @@ export default function Header() {
 
           <div className="pt-4 px-3">
             <button onClick={() => handleNav('/portal')} className="w-full flex items-center justify-center gap-2 px-5 py-3 rounded-lg text-base font-semibold text-white bg-brand-red hover:bg-brand-red/90 transition-colors cursor-pointer">
-              <span>Portal B2B Clientes</span>
+              <span>Portal</span>
             </button>
           </div>
         </div>
