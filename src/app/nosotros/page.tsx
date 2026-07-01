@@ -149,8 +149,9 @@ function NetworkTopology() {
       {isInView && (
         <motion.circle
           cx={200} cy={200} r={60} fill="url(#centerGlow)"
-          animate={{ r: [55, 68, 55], opacity: [0.3, 0.5, 0.3] }}
-          transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
+          initial={{ r: 55, opacity: 0.3 }}
+          animate={{ r: 68, opacity: 0.5 }}
+          transition={{ duration: 1.5, repeat: Infinity, repeatType: "reverse", ease: "easeInOut" }}
         />
       )}
 
@@ -158,8 +159,9 @@ function NetworkTopology() {
       {isInView && (
         <motion.circle
           cx={200} cy={200} r={12} fill="#e52822"
-          animate={{ r: [10, 14, 10], opacity: [0.7, 1, 0.7] }}
-          transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+          initial={{ r: 10, opacity: 0.7 }}
+          animate={{ r: 14, opacity: 1 }}
+          transition={{ duration: 1, repeat: Infinity, repeatType: "reverse", ease: "easeInOut" }}
         />
       )}
       <text x={200} y={205} textAnchor="middle" fill="white" fontSize={11} fontFamily="inherit" fontWeight={700}>GKM</text>
