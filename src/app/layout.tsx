@@ -101,7 +101,7 @@ export default function RootLayout({
       className={`${montserrat.variable} ${spaceGrotesk.variable} h-full`}
       suppressHydrationWarning
     >
-      <body className="min-h-full flex flex-col bg-brand-dark selection:bg-brand-red selection:text-white">
+      <body className="min-h-full flex flex-col bg-brand-dark overflow-x-clip selection:bg-brand-red selection:text-white">
         <link rel="preload" href="/images/hero/slide-cctv.webp" as="image" />
         <script
           type="application/ld+json"

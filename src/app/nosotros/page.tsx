@@ -238,8 +238,8 @@ export default function Nosotros() {
   ];
 
   return (
-    <div>
-      <section className="relative pt-20 pb-8 md:pt-28 md:pb-12 -mt-20 bg-brand-dark text-white">
+    <div className="overflow-x-clip">
+      <section className="relative pt-20 pb-8 md:pt-28 md:pb-12 -mt-20 bg-brand-dark text-white overflow-hidden">
         <motion.div
           animate={{ scale: [1, 1.2, 1], opacity: [0.12, 0.2, 0.12] }}
           transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
@@ -423,12 +423,12 @@ export default function Nosotros() {
         </div>
       </section>
 
-      <section className="relative bg-[#F8F9F9] py-16 md:py-24 overflow-hidden">
+      <section className="relative bg-[#F8F9F9] py-16 md:py-24 overflow-hidden" style={{ isolation: 'isolate' }}>
         <div className="absolute inset-0 pointer-events-none overflow-hidden">
           <div className="absolute inset-0 opacity-[0.08] bg-[linear-gradient(to_right,#808080_1px,transparent_1px),linear-gradient(to_bottom,#808080_1px,transparent_1px)] bg-[size:30px_30px]" />
           <div className="absolute inset-0 opacity-[0.06] bg-[radial-gradient(circle,#808080_0.7px,transparent_0.7px)] bg-[size:14px_14px]" />
         </div>
-        <div className="absolute top-1/2 right-0 w-[300px] md:w-[500px] h-[300px] md:h-[500px] bg-brand-red/5 rounded-full blur-3xl pointer-events-none" />
+        <div className="absolute top-1/2 right-0 translate-x-1/2 w-[300px] md:w-[500px] h-[300px] md:h-[500px] bg-brand-red/5 rounded-full blur-3xl pointer-events-none" />
 
         <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div
