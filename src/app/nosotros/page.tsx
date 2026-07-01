@@ -8,18 +8,22 @@ import dynamic from 'next/dynamic';
 import { useRouter } from 'next/navigation';
 
 const ExcelenciaSection = dynamic(() => import('@/components/home/ExcelenciaSection'), {
+  ssr: false,
   loading: () => <div className="h-[600px] bg-brand-light animate-pulse" />,
 });
 
 const SucursalesSection = dynamic(() => import('@/components/home/SucursalesSection'), {
+  ssr: false,
   loading: () => <div className="h-[500px] bg-brand-light animate-pulse" />,
 });
 
 const TestimonialsSection = dynamic(() => import('@/components/home/TestimonialsSection'), {
+  ssr: false,
   loading: () => <div className="h-[400px] bg-brand-light animate-pulse" />,
 });
 
 const ContactSection = dynamic(() => import('@/components/home/ContactSection'), {
+  ssr: false,
   loading: () => <div className="h-[600px] bg-brand-light animate-pulse" />,
 });
 
