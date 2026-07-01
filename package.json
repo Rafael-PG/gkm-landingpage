@@ -16,6 +16,11 @@
     "react": "19.2.4",
     "react-dom": "19.2.4"
   },
+  "browserslist": [
+    "last 2 versions",
+    "not dead",
+    "not < 0.5%"
+  ],
   "devDependencies": {
     "@tailwindcss/postcss": "^4",
     "@types/node": "^20",
