@@ -3,6 +3,7 @@
 import { motion } from 'motion/react';
 import { ShieldCheck, Cpu, Wrench, Server, CheckCircle2, Clock, Award, Users } from 'lucide-react';
 import { useRouter, useParams } from 'next/navigation';
+import { PageHeroImage } from '@/components/layout/PageHero';
 
 const servicesList = [
   {
@@ -59,17 +60,21 @@ export default function ServiceDetailClient() {
   };
 
   return (
-    <div className="bg-brand-light py-12 md:py-20 font-sans">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <nav className="flex mb-8 text-xs font-semibold tracking-wider text-brand-gray uppercase" aria-label="Breadcrumb">
-          <button onClick={() => router.push('/')} className="hover:text-brand-red cursor-pointer">Inicio</button>
-          <span className="mx-2 text-gray-400">/</span>
-          <button onClick={() => router.push('/servicios')} className="hover:text-brand-red cursor-pointer">Servicios</button>
-          <span className="mx-2 text-gray-400">/</span>
-          <span className="text-brand-red">{activeService.title}</span>
-        </nav>
-
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
+    <>
+      <PageHeroImage
+        kicker="GKM Technology"
+        title={activeService.title}
+        imageSrc={`/images/hero/slide-${activeService.id}.webp`}
+        imageAlt={activeService.title}
+        breadcrumbs={[
+          { label: 'Inicio', onClick: () => { router.push('/'); window.scrollTo({ top: 0, behavior: 'smooth' }); } },
+          { label: 'Servicios', onClick: () => { router.push('/servicios'); window.scrollTo({ top: 0, behavior: 'smooth' }); } },
+          { label: activeService.title },
+        ]}
+      />
+      <div className="bg-brand-light py-12 md:py-20 font-sans">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
           <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }} className="lg:col-span-8 bg-white rounded-2xl shadow-xl p-8 md:p-12 border border-gray-100">
             <div className="flex items-center gap-4 mb-6">
               <div className="p-4 bg-brand-red/10 text-brand-red rounded-xl"><IconComponent className="w-8 h-8 md:w-10 md:h-10" /></div>
@@ -125,7 +130,8 @@ export default function ServiceDetailClient() {
             <button onClick={() => { router.push('/servicios'); window.scrollTo({ top: 0, behavior: 'smooth' }); }} className="w-full py-3 border border-brand-gray/30 hover:border-brand-red text-brand-dark hover:text-brand-red bg-white rounded-xl font-semibold text-sm transition-all cursor-pointer text-center">← Ver Todos los Servicios</button>
           </motion.div>
         </div>
+        </div>
       </div>
-    </div>
+    </>
   );
 }
